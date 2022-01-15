@@ -5,6 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TestsData", menuName = "Data/QuestionsData", order = 1)]
 public class TestsDataScriptable : ScriptableObject
 {
-    //public string _categoryName;
+    public string _difficulty;
     public List<Question> _questions;
 }

@@ -6,43 +6,49 @@ using UnityEngine;
 public class TestsManager : MonoBehaviour
 {
     [SerializeField] private TestsUI _testsUi;
-    [SerializeField] private List<TestsDataScriptable> _testsDataList;
-    private GameManager _gameManager;
-    //[SerializeField] private float _timeInSeconds;
+    [SerializeField] private GameManager _gameManager;
+    private TestsDataScriptable _dataScriptable;
+    private string _currentDifficulty = "";
+    public List<TestsDataScriptable> _testsDataList;
     private int _correctAnswerCount = 0;
     private List<Question> _questions;
-    private Question _selectedQuestion = new Question();
-    //private float currentTime;
+    private Question _selectedQuestion;
+    private GameStatus _gameStatus = GameStatus.NEXT;
+    private Question selectedQuetion = new Question();
 
-    private GameStatus gameStatus = GameStatus.NEXT;
-
-    public GameStatus GameStatus { get { return gameStatus; } }
+    public void StartTests(int difficultyIndex, string difficulty)
+    {
+        _currentDifficulty = difficulty;
+        _correctAnswerCount = 0;
+        _questions = new List<Question>();
+        _dataScriptable = _testsDataList[difficultyIndex];
+        _questions.AddRange(_dataScriptable._questions);
+        SelectQuestion();
+        _gameStatus = GameStatus.PLAYING;
+    }
     /// <summary>
     /// Метод вызывается для проверки правильности ответа
     /// </summary>
     /// <param name="selectedOption">answer string</param>
     /// <returns></returns>
-    public bool Answer(string selectedOption)
+    public bool Answer(string answered)
     {
         bool correct = false;
-        if (_selectedQuestion._correctAns == selectedOption)
+        if (answered ==_selectedQuestion._correctAns)
         {
             //Если ответ правильный то счет ++
             _correctAnswerCount++;
             correct = true;
-            _testsUi.ScoreText.text = "Счет:" + _correctAnswerCount;
         }
-
-        if (gameStatus == GameStatus.PLAYING)
+        if (_gameStatus == GameStatus.PLAYING)
         {
-            //если вопросы еще остались, то новый вопрос, если нет то конец игры
             if (_questions.Count > 0)
             {
                 Invoke("SelectQuestion", 0.4f);
             }
             else
             {
-                _gameManager.GameEnd();
+                EndTests();
             }
         }
         return correct;
@@ -60,27 +66,19 @@ public class TestsManager : MonoBehaviour
         _questions.RemoveAt(val);
     }
 
-    private void Update()
+    void Update()
     {
-        //if (gameStatus == GameStatus.PLAYING)
-        //{
-        //    currentTime -= Time.deltaTime;
-        //    SetTime(currentTime);
-        //}
+        
     }
-
-    //void SetTime(float value)
-    //{
-    //    TimeSpan time = TimeSpan.FromSeconds(currentTime);                       //время в секундах
-    //    _testsUi.TimerText.text = time.ToString("mm':'ss");   
-
-    //    if (currentTime <= 0)
-    //    {
-    //        //если время закончилось конец игры
-    //        GameEnd();
-    //    }
-    //}
-    
+    private void EndTests()
+    {
+        _gameStatus = GameStatus.NEXT;
+        _gameManager._testText.SetActive(false);
+        _gameManager._testOptions.SetActive(false);
+        _gameManager._gameOverPanel.SetActive(true);
+        _testsUi._scoreText.text = "Счет:" + _correctAnswerCount;
+        PlayerPrefs.SetInt(_currentDifficulty, _correctAnswerCount);
+    }
 }
 [Serializable]
 public class Question

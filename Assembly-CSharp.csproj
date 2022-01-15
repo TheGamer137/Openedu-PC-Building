@@ -56,11 +56,11 @@
     <Compile Include="Assets\Scripts\Tests\TestsUI.cs" />
     <Compile Include="Assets\Scripts\Tests\TestsDataScriptable.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Tests\ShuffleList.cs" />
-    <Compile Include="Assets\Scripts\Tests\TestsManager.cs" />
     <Compile Include="Assets\Scripts\Theory\TheoryManager.cs" />
+    <Compile Include="Assets\Scripts\Tests\ShuffleList.cs" />
     <Compile Include="Assets\Scripts\Theory\TheoryUI.cs" />
     <Compile Include="Assets\Scripts\Theory\TheoryDataScriptable.cs" />
+    <Compile Include="Assets\Scripts\Tests\TestsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
