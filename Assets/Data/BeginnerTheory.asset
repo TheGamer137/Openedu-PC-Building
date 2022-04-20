@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6099fd60fead0746869ea4cc59f8478, type: 3}
   m_Name: BeginnerTheory
   m_EditorClassIdentifier: 
+  _difficulty: Beginner
   _TheoryList:
   - "\u041C\u0430\u0442\u0435\u0440\u0438\u043D\u0441\u043A\u0430\u044F \u043F\u043B\u0430\u0442\u0430
     (\u0441\u0438\u0441\u0442\u0435\u043C\u043D\u0430\u044F \u043F\u043B\u0430\u0442\u0430,

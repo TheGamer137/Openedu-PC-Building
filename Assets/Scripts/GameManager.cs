@@ -9,23 +9,10 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject _difficultyButton, _pauseMenu, _gamePanel, _theoryPanel,
         _startButton, _mainMenuBackground, _gameBackground;
-    public Button _beginnerBtn, _advancedBtn;
-    public GameObject _gameOverPanel, _testText, _testOptions;
-    private TestsManager _testsManager;
-    private TheoryManager _theoryManager;
+    [SerializeField] private TestsManager _testsManager;
+    [SerializeField] private TheoryManager _theoryManager;
+    private GameStatus _gameStatus;
     private bool _gameIsPaused = false;
-    //public void StartBeginnerLevel()
-    //{
-    //    SceneManager.LoadScene(1);
-    //}
-    //public void StartAdvancedLevel()
-    //{
-    //    SceneManager.LoadScene(2);
-    //}
-    //public void ReturnToMainMenu()
-    //{
-    //    SceneManager.LoadScene(0);
-    //}
 
     public void StartGame()
     {
@@ -35,19 +22,31 @@ public class GameManager : MonoBehaviour
         _gameBackground.SetActive(true);
         
     }
+    public void SelectDifficulty(int difficultyIndex)
+    {
+        _theoryManager.StartTheory(difficultyIndex);
+        _testsManager.StartTests(difficultyIndex);
+        _difficultyButton.SetActive(false);
+        _theoryPanel.SetActive(true) ;
+    }
+   
     public void Pause()
     {
         _gameIsPaused = true;
+        Time.timeScale = 0;
         _pauseMenu.SetActive(true);
     }
 
     public void Resume()
     {
         _gameIsPaused = false;
+        Time.timeScale = 1;
         _pauseMenu.SetActive(false);
     }
     public void SkipToTests()
     {
+        Time.timeScale = 1;
+        _gameStatus = GameStatus.TheoryFinished;
         _gameIsPaused = false;
         _pauseMenu.SetActive(false);
         _theoryPanel.SetActive(false);
@@ -65,5 +64,18 @@ public class GameManager : MonoBehaviour
         {
             Pause();
         }
+
     }
+    public void Restart()
+    {
+        SceneManager.LoadScene(0);
+        Time.timeScale = 1;
+    }
+}
+[SerializeField]
+public enum GameStatus
+{
+    Playing,
+    TheoryFinished,
+    GameOver
 }
